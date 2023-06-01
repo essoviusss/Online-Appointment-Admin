@@ -10,7 +10,8 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import axios from "axios";
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom"; 
+import { useNavigate } from "react-router-dom";
+import './Auth_Components/Login.css'
 
 const theme = createTheme();
 
@@ -34,20 +35,20 @@ export default function Login() {
     let fData = new FormData();
     fData.append("username", username);
     fData.append("password", password);
-  
+
     try {
       const response = await axios.post(url, fData);
       console.log(response.data);
-  
+
       if (response.data.message !== "Success") {
         console.log("Login failed:", response.data.message);
         alert(response.data.message);
         return;
       }
-  
+
       // Save the JWT token in the local storage
       const jwtToken = await response.data.token;
-      
+
       if (response.data.message === "Success") {
         alert("Login Successful");
         localStorage.setItem("token", jwtToken);
@@ -55,24 +56,25 @@ export default function Login() {
       } else {
         alert("User does not exist");
       }
-      } catch (error) {
-        console.error("Error:", error);
-        alert(error);
-      }
+    } catch (error) {
+      console.error("Error:", error);
+      alert(error);
+    }
   };
 
   return (
     <ThemeProvider theme={theme}>
-      <div className='login-container'>
-        <div className='column-right'>
+      <div className="login-container">
+        <div className="column-right">
           <Container component="main" maxWidth="xs">
             <CssBaseline />
             <Box
               sx={{
-                marginTop: 8,
                 display: 'flex',
-                flexDirection: 'column',
+                justifyContent: 'center',
                 alignItems: 'center',
+                flexDirection: 'column',
+                height: '100%',
               }}
             >
               <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
@@ -81,37 +83,37 @@ export default function Login() {
               <Typography component="h1" variant="h5">
                 APPOINTMENT SYSTEM ADMIN
               </Typography>
-                <TextField
-                  onChange={e => setusername(e.target.value)}
-                  margin="normal"
-                  required
-                  fullWidth
-                  id="username"
-                  label="username"
-                  name="username"
-                  autoComplete="username"
-                  autoFocus
-                />
-                <TextField
-                  onChange={e => setPassword(e.target.value)}
-                  margin="normal"
-                  required
-                  fullWidth
-                  name="password"
-                  label="Password"
-                  type="password"
-                  id="password"
-                  autoComplete="current-password"
-                />
-                <Button
-                  onClick={signIn}
-                  type="submit"
-                  fullWidth
-                  variant="contained"
-                  sx={{ mt: 3, mb: 2 }}
-                >
-                  Login
-                </Button>
+              <TextField
+                onChange={e => setusername(e.target.value)}
+                margin="normal"
+                required
+                fullWidth
+                id="username"
+                label="username"
+                name="username"
+                autoComplete="username"
+                autoFocus
+              />
+              <TextField
+                onChange={e => setPassword(e.target.value)}
+                margin="normal"
+                required
+                fullWidth
+                name="password"
+                label="Password"
+                type="password"
+                id="password"
+                autoComplete="current-password"
+              />
+              <Button
+                onClick={signIn}
+                type="submit"
+                fullWidth
+                variant="contained"
+                sx={{ mt: 3, mb: 2 }}
+              >
+                Login
+              </Button>
             </Box>
           </Container>
         </div>

@@ -10,6 +10,7 @@ import AdminCalendar from './pages/Admin_Calendar';
 import Cancelled from './pages/Appointment_Components/Cancelled';
 import Resched from './pages/Appointment_Components/Resched';
 import Approved from './pages/Appointment_Components/Approved';
+import Calendar from './utils/Calendar';
 
 
 function MainContent() {
@@ -44,6 +45,7 @@ function MainContent() {
             <Route path="/Cancelled" element={<Cancelled />} />
             <Route path="/Resched" element={<Resched />} />
             <Route path="/Approved" element={<Approved />} />
+            <Route path="/Calendar" element={<Calendar />} />
         </Routes>
       </div>
     </div>

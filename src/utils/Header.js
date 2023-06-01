@@ -88,9 +88,7 @@ const Header = () => {
               width: '150px'
             }}
           >
-            <div style={{ cursor: 'pointer' }} onClick={() => console.log('Profile clicked')}>
-              Profile
-            </div>
+            
             <div style={{ cursor: 'pointer' }} onClick={logout}>
               Logout
             </div>

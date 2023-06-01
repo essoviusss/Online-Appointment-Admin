@@ -1,8 +1,11 @@
+*{
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
 .status-dropdown {
     display: flex;
     flex-direction: column;
     position: absolute;
-    background-color: black;
+    background-color: rgb(0, 56, 168);
     width: 100%;
     padding: 10px 0;
     z-index: 1;

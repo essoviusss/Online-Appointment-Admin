@@ -73,13 +73,16 @@ export default function Cancelled() {
   return (
     <div>
       <Header />
-      <TextField
-        label="Search"
-        value={searchQuery}
-        onChange={handleSearchChange}
-        fullWidth
-        margin="normal"
-      />
+      <div className="main-container">
+      <div className="search">
+        <TextField
+          label="Search"
+          value={searchQuery}
+          onChange={handleSearchChange}
+          fullWidth
+          margin="normal"
+        />
+      </div>
       <TableContainer>
         <Table>
           <TableHead>
@@ -123,7 +126,7 @@ export default function Cancelled() {
         </Table>
       </TableContainer>
       <TablePagination
-        rowsPerPageOptions={[5, 10, 15]}
+        rowsPerPageOptions={[5, 7]}
         component="div"
         count={filteredAppointments.length}
         rowsPerPage={rowsPerPage}
@@ -131,6 +134,7 @@ export default function Cancelled() {
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
+      </div>
       {isModalOpen && (
         <ViewModal appointment={selectedAppointment} onClose={handleCloseModal} />
       )}

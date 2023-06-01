@@ -1,0 +1,11 @@
+.main-container{
+    margin-left: 2%;
+    margin-right: 2%;
+    
+}
+.search{
+    display: flex;
+    margin-top: 2%;
+    margin-bottom: 1%;
+    margin-left: 75%;
+}

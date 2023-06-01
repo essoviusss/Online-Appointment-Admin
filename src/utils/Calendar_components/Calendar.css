@@ -1,0 +1,112 @@
+/* Update the CSS of the Calendar component */
+*{
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+.calendar {
+    width: 100%;
+    max-width: 100%;
+    height: 100%;
+    max-height: 90%;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    min-width: 300px;
+    min-height: 300px;
+    max-height: 100%;
+  }
+  
+  .calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px;
+    background-color: rgb(206, 17, 38);
+    color: white;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+  }
+  
+  .calendar-header button {
+    background-color: transparent;
+    border: none;
+    color: white;
+    font-size: 12px;
+    cursor: pointer;
+  }
+  
+  .calendar-header span {
+    font-size: 15px;
+    font-weight: bold;
+    white-space: nowrap; /* Prevent header text from wrapping */
+    overflow: hidden; /* Hide overflow text */
+    text-overflow: ellipsis; /* Display ellipsis (...) for overflow text */
+  }
+  
+  .calendar-body {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 1px;
+    background-color: #f7f9fd;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+    font-size: 12px; /* Adjust the font size for calendar content */
+  }
+  
+  .calendar-dayname {
+    background-color: #f7f9fd;
+    padding: 8px 0; /* Adjust the padding for calendar day names */
+    text-align: center;
+    color: #888888;
+    font-size: 12px; /* Adjust the font size for calendar day names */
+    text-transform: uppercase;
+  }
+  
+  .calendar-day {
+    background-color: #ffffff;
+    padding: 16px 0; /* Adjust the padding for calendar days */
+    text-align: center;
+    cursor: pointer;
+    color: #333333;
+    font-weight: bold;
+    font-size: 10px; /* Adjust the font size for calendar days */
+    transition: background-color 0.2s ease-in-out;
+  }
+  
+  .calendar-day:hover {
+    background-color: #e6f1ff;
+  }
+  
+  .calendar-day.other-month {
+    color: #cccccc;
+  }
+  
+  .calendar-day.other-month-weekend {
+    background-color: #e6f1ff;
+  }
+  
+  .calendar-day.selected {
+    background-color: #007bff;
+    color: #ffffff;
+  }
+  
+  .calendar-day.available.selected {
+    background-color: #0066cc;
+    color: #ffffff;
+  }
+  
+  .calendar-day.available {
+    background-color: green;
+    color: white;
+  }
+  
+  .calendar-day.unavailable {
+    background-color: red;
+    color: white;
+    cursor: not-allowed;
+  }
+  
+  .calendar-day.weekend {
+    background-color: #e6f1ff;
+    color: #f00505;
+    cursor: not-allowed;
+  }

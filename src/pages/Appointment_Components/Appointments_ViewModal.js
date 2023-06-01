@@ -12,7 +12,7 @@ export default function ViewModal({ appointment, onClose }) {
         <p>Personnel: {appointment.personnel}</p>
         <p>Selected Date: {appointment.selectedDate}</p>
         <p>Selected Time: {appointment.selected_time}</p>
-        {appointment.status === "Cancelled" ? <p>Reason: {appointment.reason}</p> : ""}
+        {appointment.status === "Cancelled" || appointment.status === "Rescheduled" ? <p>Reason: {appointment.reason}</p> : ""}
         <p>Status: {appointment.status}</p>
       </DialogContent>
       <DialogActions>

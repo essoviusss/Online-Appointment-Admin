@@ -12,8 +12,15 @@ import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import dayjs from 'dayjs';
+import './Appointments_Components/Appointments.css'
+import useAuth from "../hooks/useAuth";
+import { useNavigate } from "react-router-dom";
+import jwtDecode from "jwt-decode";
+
 
 export default function Appointments() {
+  const navigate = useNavigate();
+  const isLoggedIn = useAuth(); 
   const [appointments, setAppointments] = useState([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -23,7 +30,25 @@ export default function Appointments() {
   const [updatedSelectedDate, setUpdatedSelectedDate] = useState(null);
   const [updatedSelectedTime, setUpdatedSelectedTime] = useState(null);
   const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
+  const [isCancelOpen, setIsCancelOpen] = useState(false);
   const [cancellationReason, setCancellationReason] = useState("");
+  const [reschedReason, setReschedReason] = useState("");
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+
+    if (token) {
+        const decodedToken = jwtDecode(token);
+        const currentTime = Math.floor(Date.now() / 1000); // get the current time
+        if (currentTime > decodedToken.exp) {
+            localStorage.removeItem("token");
+            alert("Token expired, please login again");
+            navigate('/');
+        }
+    } else if (!isLoggedIn) {
+        navigate('/');
+    }
+}, [isLoggedIn, navigate]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -60,6 +85,7 @@ export default function Appointments() {
   };
 
   const handleView = (appointment) => {
+    setIsCancelOpen(true);
     setSelectedAppointment(appointment);
     setIsModalOpen(true);
     setIsDatePickerOpen(false); // Close the date picker dialog
@@ -88,6 +114,7 @@ export default function Appointments() {
   };
 
   const cancelStatus = async (id) => {
+    setIsCancelOpen(true);
     const shouldCancel = window.confirm("Are you sure you want to cancel this appointment?");
     if (shouldCancel) {
       const reason = prompt("Please enter the cancellation reason:");
@@ -136,6 +163,7 @@ export default function Appointments() {
       fData.append("selectedDate", selectedDate);
       fData.append("selectedTime", selectedTime);
       fData.append("status", "Rescheduled");
+      fData.append("reason", reschedReason);
 
       const response = await axios.post(url, fData);
       if (response.data.message === "Success") {
@@ -177,66 +205,70 @@ export default function Appointments() {
   return (
     <div>
       <Header />
-      <TextField
-        label="Search"
-        value={searchQuery}
-        onChange={handleSearchChange}
-        fullWidth
-        margin="normal"
-      />
-      <TableContainer>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell align="center" style={{ fontWeight: "bold", backgroundColor: "#f0f0f0" }}>
-                Name
-              </TableCell>
-              <TableCell align="center" style={{ fontWeight: "bold", backgroundColor: "#f0f0f0" }}>
-                Department
-              </TableCell>
-              <TableCell align="center" style={{ fontWeight: "bold", backgroundColor: "#f0f0f0" }}>
-                Selected Date
-              </TableCell>
-              <TableCell align="center" style={{ fontWeight: "bold", backgroundColor: "#f0f0f0" }}>
-                Status
-              </TableCell>
-              <TableCell align="center" style={{ fontWeight: "bold", backgroundColor: "#f0f0f0" }}>
-                Action
-              </TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {filteredAppointments
-              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((appointment) => (
-                <TableRow key={appointment.appointment_id}>
-                  <TableCell align="center">{appointment.name}</TableCell>
-                  <TableCell align="center">{appointment.department}</TableCell>
-                  <TableCell align="center">{appointment.selectedDate}</TableCell>
-                  <TableCell align="center">{appointment.status}</TableCell>
-                  <TableCell align="center">
-                    <Button onClick={() => handleView(appointment)}>View</Button>
-                    <Button onClick={() => approveStatus(appointment.appointment_id)}>Approve</Button>
-                    <Button onClick={() => reschedStatus(appointment)}>Reschedule</Button>
-                    <Button onClick={() => cancelStatus(appointment.appointment_id)}>Cancel</Button>
-                  </TableCell>
-                </TableRow>
-              ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      <TablePagination
-        rowsPerPageOptions={[5, 10, 15]}
-        component="div"
-        count={filteredAppointments.length}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-      />
+      <div className="main-container">
+        <div className="search">
+          <TextField
+            label="Search"
+            value={searchQuery}
+            onChange={handleSearchChange}
+            fullWidth
+            margin="normal"
+          />
+        </div>
+        <TableContainer>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell align="center" style={{ fontWeight: "bold", backgroundColor: "#f0f0f0" }}>
+                  Name
+                </TableCell>
+                <TableCell align="center" style={{ fontWeight: "bold", backgroundColor: "#f0f0f0" }}>
+                  Department
+                </TableCell>
+                <TableCell align="center" style={{ fontWeight: "bold", backgroundColor: "#f0f0f0" }}>
+                  Selected Date
+                </TableCell>
+                <TableCell align="center" style={{ fontWeight: "bold", backgroundColor: "#f0f0f0" }}>
+                  Status
+                </TableCell>
+                <TableCell align="center" style={{ fontWeight: "bold", backgroundColor: "#f0f0f0" }}>
+                  Action
+                </TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {filteredAppointments
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .map((appointment) => (
+                  <TableRow key={appointment.appointment_id}>
+                    <TableCell align="center">{appointment.name}</TableCell>
+                    <TableCell align="center">{appointment.department}</TableCell>
+                    <TableCell align="center">{appointment.selectedDate}</TableCell>
+                    <TableCell align="center">{appointment.status}</TableCell>
+                    <TableCell align="center">
+                      <Button onClick={() => handleView(appointment)}>View</Button>
+                      <Button onClick={() => approveStatus(appointment.appointment_id)}>Approve</Button>
+                      <Button onClick={() => reschedStatus(appointment)}>Reschedule</Button>
+                      <Button onClick={() => cancelStatus(appointment.appointment_id)}>Cancel</Button>
+                    </TableCell>
+                  </TableRow>
+                ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+        <TablePagination
+          rowsPerPageOptions={[5, 7]}
+          component="div"
+          count={filteredAppointments.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
+      </div>
       {isModalOpen && (
         <Dialog open={isModalOpen} onClose={handleCloseModal}>
-          <DialogTitle>Reschedule Appointment</DialogTitle>
+          {isDatePickerOpen ? <DialogTitle>Reschedule Appointment</DialogTitle> : <DialogTitle>View Details</DialogTitle>}
           <DialogContent>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               {isDatePickerOpen ? (
@@ -249,12 +281,21 @@ export default function Appointments() {
                       renderInput={(params) => <TextField {...params} />}
                     />
                   </div>
-                  <div style={{ marginBottom: '10px' }}>
+                  <div>
                     <TimePicker
                       label="Select Time"
                       value={updatedSelectedTime}
                       onChange={(newTime) => setUpdatedSelectedTime(newTime)}
                       renderInput={(params) => <TextField {...params} />}
+                    />
+                  </div>
+                  <div style={{ marginBottom: '10px' }}>
+                    <TextField
+                      label="Reschedule Reason"
+                      value={reschedReason}
+                      onChange={(e) => setReschedReason(e.target.value)}
+                      fullWidth
+                      margin="normal"
                     />
                   </div>
                 </div>
@@ -268,13 +309,15 @@ export default function Appointments() {
                   <p>Selected Date: {selectedAppointment.selectedDate}</p>
                   <p>Selected Time: {selectedAppointment.selected_time}</p>
                   <p>Status: {selectedAppointment.status}</p>
-                  <TextField
-                    label="Cancellation Reason"
-                    value={cancellationReason}
-                    onChange={(e) => setCancellationReason(e.target.value)}
-                    fullWidth
-                    margin="normal"
-                  />
+                  {isCancelOpen ? "" : (
+                    <TextField
+                      label="Cancellation Reason"
+                      value={cancellationReason}
+                      onChange={(e) => setCancellationReason(e.target.value)}
+                      fullWidth
+                      margin="normal"
+                    />
+                  )}
                 </div>
               )}
             </LocalizationProvider>
