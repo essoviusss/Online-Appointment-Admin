@@ -13,14 +13,22 @@ import './Sidebar.css';
 
 const Sidebar = () => {
   const [statusOpen, setStatusOpen] = useState(false);
-
+  // eslint-disable-next-line
+  const [showLogo, setShowLogo] = useState(true);
   return (
     <div style={{ display: 'flex', height: '100vh', overflow: 'scroll initial' }}>
-      <CDBSidebar textColor="rgb(255, 255, 255)" backgroundColor="rgb(0, 56, 168)">
+      <CDBSidebar textColor="rgb(255, 255, 255)" backgroundColor="grey">
         <CDBSidebarHeader prefix={<i className="fa fa-bars fa-large"></i>}>
-          <a href="/" className="text-decoration-none" style={{ color: 'inherit' }}>
-            DepEd Admin
-          </a>
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+            <img
+              src="/images/logo.png"
+              alt="logo"
+              style={{ height: '40px', marginRight: '8px', marginTop: '3px' }}
+            />
+            <span style={{ color: 'inherit', fontSize: '120%', paddingTop: '5px' }}>
+              {showLogo ? 'ADMIN' : ''}
+            </span>
+          </div>
         </CDBSidebarHeader>
 
         <CDBSidebarContent className="sidebar-content">

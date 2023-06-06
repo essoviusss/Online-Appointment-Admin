@@ -75,11 +75,14 @@ export default function Login() {
                 alignItems: 'center',
                 flexDirection: 'column',
                 height: '100%',
+                marginBottom: '20%'
               }}
             >
-              <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-                <LockOutlinedIcon />
-              </Avatar>
+              <img
+              src="/images/logo.png"
+              alt="logo"
+              style={{ height: '70px', marginRight: '8px', marginBottom: '20px' }}
+              />
               <Typography component="h1" variant="h5">
                 APPOINTMENT SYSTEM ADMIN
               </Typography>
@@ -114,10 +117,13 @@ export default function Login() {
               >
                 Login
               </Button>
+              
             </Box>
           </Container>
+          
         </div>
       </div>
     </ThemeProvider>
+    
   );
 }
