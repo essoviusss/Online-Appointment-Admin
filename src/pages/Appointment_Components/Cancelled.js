@@ -75,13 +75,16 @@ export default function Cancelled() {
       <Header />
       <div className="main-container">
       <div className="search">
-        <TextField
-          label="Search"
-          value={searchQuery}
-          onChange={handleSearchChange}
-          fullWidth
-          margin="normal"
-        />
+        <h3>Cancelled</h3>
+        <div className="search-cont">
+          <TextField
+            label="Search"
+            value={searchQuery}
+            onChange={handleSearchChange}
+            fullWidth
+            margin="normal"
+          />
+        </div>
       </div>
       <TableContainer>
         <Table>

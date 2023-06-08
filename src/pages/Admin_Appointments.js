@@ -207,13 +207,16 @@ export default function Appointments() {
       <Header />
       <div className="main-container">
         <div className="search">
-          <TextField
-            label="Search"
-            value={searchQuery}
-            onChange={handleSearchChange}
-            fullWidth
-            margin="normal"
-          />
+          <h3>Appointments</h3>
+          <div className="search-cont">
+            <TextField
+              label="Search"
+              value={searchQuery}
+              onChange={handleSearchChange}
+              fullWidth
+              margin="normal"
+            />
+          </div>
         </div>
         <TableContainer>
           <Table>
